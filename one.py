@@ -45,7 +45,7 @@ class Machine:
     def generate_random_colors(self):  # logic to generate random slots
         print("Randomizing slots values")
         for index, slot in enumerate(self.slots):
-            self.slots[index] = Color(random.randint(0, len(self.slots)))
+            self.slots[index] = Color(random.randint(1, len(self.slots)))
 
     def determine_game_won(self, player) -> bool:  # our esteemed prize system
         print("Checking if game has been won")
