@@ -1,9 +1,15 @@
+import enum
+import random
 # models
 # colors, player, machine, money
 
-class Color:
-    def __init__(self, name):
-        self.name = name
+# should have a list of all possible colors there is.
+class Color(enum.Enum):
+    WHITE = 1
+    BLACK = 2
+    GREEN = 3
+    YELLOW = 4
+
 
 class Player:
     def __init__(self, name, no_of_plays, money):
@@ -13,9 +19,6 @@ class Player:
 
     def play(self):
         print("A single play")
-        # implement logic for a single play
-        # Each time a player plays our fruit machine
-        # we display four 'slots' each with a randomly selected colour in each slot.
 
     def receive_money(self, received_amount): # if the machine is paying out money, the player should be able to receive it.
         self.money += received_amount
@@ -30,18 +33,19 @@ class Money:
 # take in Money
 class Machine:
     def __init__(self, money, cost_of_single_play):
-        self.float = money.amount # adding a "float" to our fruit machine, this is an initial sum of money that the machine has
+        self.float = money.amount  # adding a "float" to our fruit machine, this is an initial sum of money that the machine has
         self.cost_of_single_play = cost_of_single_play
-        self.slots = [Color("black"), Color("white"), Color("green"), Color("yellow")] # black, white, green, yellow.
+        self.slots = [Color.BLACK, Color.WHITE, Color.GREEN, Color.YELLOW]
         # create four random colors. or randomize them during play
 
-    def generate_random_colors(self): # logic to generate random slots
-        print("Randomzing slots values") # self.slots = []
+    def generate_random_colors(self):  # logic to generate random slots
+        print("Randomizing slots values")
+        for index, slot in enumerate(self.slots):
+            self.slots[index] = random.randint(0, len(self.slots))
 
 
-    def determine_game_won(self, player): # our esteemed prize system
+    def determine_game_won(self, player):  # our esteemed prize system
         print("Checking if game has been won")
-
         # checking: If each slot has a different colour
         # then the machine should pay out half the current money in the machine.
         # create a set from our list of slot and compare length
@@ -80,6 +84,8 @@ class Machine:
         return False
 
     def play(self, player):
+        # Each time a player plays our fruit machine
+        # we display four 'slots' each with a randomly selected colour in each slot.
         self.generate_random_colors()
         print(f"Play no. {player.no_of_plays} from player {player.name}")
         player.no_of_plays -= 1
