@@ -1,5 +1,7 @@
 import enum
 import random
+
+
 # models
 # colors, player, machine, money
 
@@ -20,14 +22,15 @@ class Player:
     def play(self):
         print("A single play")
 
-    def receive_money(self, received_amount): # if the machine is paying out money, the player should be able to receive it.
+    def receive_money(self,received_amount):
+        # if the machine is paying out money, the player should be able to receive it.
         self.money += received_amount
         print(f"Player {self.name} receeved {self.received_amount}")
 
 
 class Money:
     def __init__(self, amount):
-        self.amount = amount # this is an initial sum of money that the machine has. a float
+        self.amount = amount  # this is an initial sum of money that the machine has. a float
 
 
 # take in Money
@@ -41,10 +44,9 @@ class Machine:
     def generate_random_colors(self):  # logic to generate random slots
         print("Randomizing slots values")
         for index, slot in enumerate(self.slots):
-            self.slots[index] = random.randint(0, len(self.slots))
+            self.slots[index] = Color(random.randint(0, len(self.slots)))
 
-
-    def determine_game_won(self, player):  # our esteemed prize system
+    def determine_game_won(self, player) -> bool:  # our esteemed prize system
         print("Checking if game has been won")
         # checking: If each slot has a different colour
         # then the machine should pay out half the current money in the machine.
@@ -52,6 +54,7 @@ class Machine:
         if len(set(self.slots)) == len(self.slots):
             print("Each slot has a different color. Paying our half the current money we have.")
             player.money.amount += self.float // 2  # returning integer cause we're running a business here
+            return True
         elif len(self.check_for_duplicates()) > 0 and self.check_for_adjacents_in_slot():
             # two (or more) adjacent slots with same colour, paying out (5 x single play).
             print("There are adjacent duplicates")
@@ -59,7 +62,8 @@ class Machine:
                 player.money.amount += 5 * self.cost_of_single_play
             else:
                 self.insufficient_prize_for_player(player)
-
+            return True
+        return False
 
     def insufficient_prize_for_player(self, player):
         player.no_of_plays += (5 * self.cost_of_single_play) - self.float
