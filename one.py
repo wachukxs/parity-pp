@@ -22,7 +22,8 @@ class Player:
     def play(self):
         print("A single play")
 
-    def receive_money(self,received_amount):
+
+    def receive_money(self, received_amount):
         # if the machine is paying out money, the player should be able to receive it.
         self.money += received_amount
         print(f"Player {self.name} receeved {self.received_amount}")
